@@ -72,6 +72,8 @@ class Yolov8DetectionModel(DetectionModel):
 
         prediction_result = self.model(image[:, :, ::-1], **kwargs)  # YOLOv8 expects numpy arrays to have BGR
 
+# Convert this to your desired format, e.g., a polygon that SAHI might accept
+        prediction_result = [(prediction_result[i], prediction_result[i+1]) for i in range(1, len(prediction_result), 2)]
         if self.has_mask:
             if not prediction_result[0].masks:
                 prediction_result[0].masks = Masks(
